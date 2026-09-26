@@ -3,18 +3,33 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Glass Frame</title>
+    <title>Dayz Менеджер</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
 
     <style>
         :root {
             --bg-url: url("{{ background_url }}");
+            --bg-pos: {{ bg_anim.pos_from | default(20) }}%;
+
             --frame-margin: {{ frame.margin }}px;
             --frame-blur: {{ frame.blur }}px;
             --frame-opacity: {{ frame.opacity }};
             --frame-radius: {{ frame.border_radius }}px;
             --frame-border: {{ frame.border_width }}px;
-            --bg-pos: {{ bg_anim.pos_from | default(20) }}%;
+
+            --sidebar-width: {{ sidebar.width }}px;
+            --sidebar-bg: {{ sidebar.background }};
+            --sidebar-border-width: {{ sidebar.border_width }}px;
+            --sidebar-border-color: {{ sidebar.border_color }};
+
+            --sidebar-footer-bg: {{ sidebar.footer.background | default('rgba(255,255,255,0.05)') }};
+            --sidebar-footer-border-width: {{ sidebar.footer.border_top_width | default(1) }}px;
+            --sidebar-footer-border-color: {{ sidebar.footer.border_top_color | default('rgba(255,255,255,0.1)') }};
+
+            --menu-item-border-width: {{ sidebar.menu_style.item_border_width | default(1) }}px;
+            --menu-item-border-color: {{ sidebar.menu_style.item_border_color | default('rgba(255,255,255,0.15)') }};
+            --menu-item-border-radius: {{ sidebar.menu_style.item_border_radius | default(8) }}px;
+            --menu-item-hover-border-color: {{ sidebar.menu_style.item_hover_border_color | default('rgba(255,255,255,0.4)') }};
         }
     </style>
 </head>
@@ -27,7 +42,59 @@
     data-bg-zoom-to="{{ zoom.to | default(1.4) }}"
 >
     <main class="glass-frame">
-        <!-- сюда потом вставим контент -->
+        <aside class="sidebar">
+            {% if sidebar.title %}
+            <div class="sidebar-header">
+                <h2>{{ sidebar.title }}</h2>
+            </div>
+            {% endif %}
+
+            <ul class="sidebar-nav">
+                {% for item in sidebar.menu %}
+                    {% if item.enabled %}
+                    <li>
+                        <a href="#{{ item.page | default('') }}"
+                        data-page="{{ item.page | default('') }}"
+                        class="nav-link">
+                            {% if item.icon %}
+                            <svg class="nav-icon" aria-hidden="true">
+                                <use href="{{ url_for('static', filename='icons/icons.svg') }}#icon-{{ item.icon }}"></use>
+                            </svg>
+                            {% endif %}
+                            <span class="nav-label">{{ item.label }}</span>
+                        </a>
+                    </li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+
+            {% if sidebar.footer and sidebar.footer.menu %}
+            <div class="sidebar-footer">
+                <ul class="sidebar-nav">
+                    {% for item in sidebar.footer.menu %}
+                        {% if item.enabled %}
+                        <li>
+                            <a href="#{{ item.page | default('') }}"
+                            data-page="{{ item.page | default('') }}"
+                            class="nav-link">
+                                {% if item.icon %}
+                                <svg class="nav-icon" aria-hidden="true">
+                                    <use href="{{ url_for('static', filename='icons/icons.svg') }}#icon-{{ item.icon }}"></use>
+                                </svg>
+                                {% endif %}
+                                <span class="nav-label">{{ item.label }}</span>
+                            </a>
+                        </li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+        </aside>
+        <section class="content" id="content">
+            <h1>Добро пожаловать</h1>
+            <p>Выберите раздел в меню слева.</p>
+        </section>
     </main>
 
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>

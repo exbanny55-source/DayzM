@@ -31,10 +31,34 @@ DEFAULT_SETTINGS = {
         "opacity": 0.25,
         "border_radius": 15,
         "border_width": 1
+    },
+    "sidebar": {
+        "title": "Dayz Менеджер",
+        "width": 240,
+        "background": "transparent",
+        "border_width": 1,
+        "border_color": "rgba(255, 255, 255, 0.2)",
+        "menu_style": {
+            "item_border_width": 1,
+            "item_border_color": "rgba(255, 255, 255, 0.15)",
+            "item_border_radius": 8,
+            "item_hover_border_color": "rgba(255, 255, 255, 0.4)"
+        },
+        "menu": [
+            { "enabled": True, "label": "Управление Сервером", "icon": "server",   "page": "servers" },
+            { "enabled": True, "label": "Управление Игрой",    "icon": "game",     "page": "game" },
+            { "enabled": True, "label": "Управление Модами",   "icon": "mod",      "page": "mods" }
+        ],
+        "footer": {
+            "background": "rgba(255, 255, 255, 0.05)",
+            "border_top_width": 1,
+            "border_top_color": "rgba(255, 255, 255, 0.1)",
+            "menu": [
+                { "enabled": True, "label": "Настройки", "icon": "settings", "page": "settings" }
+            ]
+        }
     }
 }
-
-
 def _merge(default: dict, current: dict) -> dict:
     """Рекурсивно добавляет в current отсутствующие ключи из default."""
     result = current.copy()
