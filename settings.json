@@ -1,0 +1,25 @@
+{
+  "background": {
+    "type": "local",
+    "source": "images/fon.jpg",
+    "animation": {
+      "enabled": true,
+      "duration": 120000,
+      "pos_from": 20,
+      "pos_to": 100,
+      "size_from": 3400,
+      "size_to": 2400,
+      "zoom": {
+        "from": 1.0,
+        "to": 1.4
+      }
+    }
+  },
+  "frame": {
+    "margin": 20,
+    "blur": 2,
+    "opacity": 0.25,
+    "border_radius": 15,
+    "border_width": 1
+  }
+}

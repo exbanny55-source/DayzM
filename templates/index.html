@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Glass Frame</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+
+    <style>
+        :root {
+            --bg-url: url("{{ background_url }}");
+            --frame-margin: {{ frame.margin }}px;
+            --frame-blur: {{ frame.blur }}px;
+            --frame-opacity: {{ frame.opacity }};
+            --frame-radius: {{ frame.border_radius }}px;
+            --frame-border: {{ frame.border_width }}px;
+            --bg-pos: {{ bg_anim.pos_from | default(20) }}%;
+        }
+    </style>
+</head>
+<body
+    data-bg-enabled="{{ bg_anim.enabled | default(true) }}"
+    data-bg-duration="{{ bg_anim.duration | default(120000) }}"
+    data-bg-pos-from="{{ bg_anim.pos_from | default(20) }}"
+    data-bg-pos-to="{{ bg_anim.pos_to | default(100) }}"
+    data-bg-zoom-from="{{ zoom.from | default(1.0) }}"
+    data-bg-zoom-to="{{ zoom.to | default(1.4) }}"
+>
+    <main class="glass-frame">
+        <!-- сюда потом вставим контент -->
+    </main>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
