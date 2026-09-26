@@ -1,0 +1,84 @@
+/* ============================================================
+   Кастомный диалог подтверждения
+   ============================================================ */
+
+.confirm-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 30000;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s;
+}
+
+.confirm-overlay.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.confirm-modal {
+  width: 100%;
+  max-width: 400px;
+  padding: 22px 24px 18px;
+
+  color: #fff;
+  background: rgba(20, 20, 25, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 14px;
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.6),
+    0 1px 0 0 rgba(255, 255, 255, 0.1) inset;
+
+  transform: scale(0.96);
+  transition: transform 0.2s;
+}
+
+.confirm-overlay.open .confirm-modal {
+  transform: scale(1);
+}
+
+.confirm-title {
+  font-size: 1.05rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.confirm-text {
+  font-size: 0.9rem;
+  line-height: 1.4;
+  opacity: 0.75;
+  margin-bottom: 18px;
+  white-space: pre-line;   /* \n в тексте станут переносами */
+}
+
+.confirm-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.confirm-actions .btn {
+  min-width: 80px;
+  justify-content: center;
+}
+
+/* Красная кнопка для опасных действий */
+.btn-danger {
+  background: rgba(255, 100, 100, 0.25);
+  border-color: rgba(255, 100, 100, 0.5);
+}
+
+.btn-danger:hover {
+  background: rgba(255, 100, 100, 0.45);
+  border-color: rgba(255, 100, 100, 0.75);
+}

@@ -64,6 +64,8 @@
   const links = document.querySelectorAll(".nav-link");
   const cache = new Map();   // page → HTML
 
+  let currentPage = null;
+
   async function fetchPage(name) {
     if (cache.has(name)) return cache.get(name);
     const res = await fetch(`/api/page/${name}`);
@@ -81,19 +83,33 @@
       l.classList.toggle("active", l.dataset.page === name);
     });
 
-    // Плавное затухание — опционально
+    // Событие «страница уходит» — чтобы модули могли прибраться
+    if (currentPage && currentPage !== name) {
+      document.dispatchEvent(new CustomEvent("spa:page-unloading", {
+        detail: { page: currentPage }
+      }));
+    }
+
+    // Плавное затухание
     content.style.opacity = "0";
 
     try {
       const html = await fetchPage(name);
       content.innerHTML = html;
+      content.dataset.page = name;
 
-      // Меняем URL, не перезагружая страницу
+      // Меняем URL без перезагрузки
       if (push) {
         history.pushState({ page: name }, "", `#${name}`);
       }
 
       content.scrollTop = 0;
+
+      // 🔔 Сообщаем всем модулям, что страница загружена
+      currentPage = name;
+      document.dispatchEvent(new CustomEvent("spa:page-loaded", {
+        detail: { page: name, container: content }
+      }));
     } catch (err) {
       content.innerHTML = `
         <h1>Ошибка</h1>
@@ -101,7 +117,6 @@
       `;
       console.error("[spa] load error:", err);
     } finally {
-      // Возвращаем непрозрачность
       content.style.opacity = "1";
     }
   }
@@ -125,8 +140,5 @@
   const initial = location.hash.slice(1);
   if (initial) {
     loadPage(initial, { push: false });
-  } else {
-    // Ничего не открыто — подсветим первый пункт (опционально)
-    // loadPage(links[0]?.dataset.page, { push: false });
   }
 })();

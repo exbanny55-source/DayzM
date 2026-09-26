@@ -30,7 +30,7 @@
   },
   "sidebar": {
     "background": "transparent",
-    "border_color": "#4d4d4d",
+    "border_color": "rgba(255, 255, 255, 0.08)",
     "border_width": 2,
     "footer": {
       "background": "rgba(255, 255, 255, 0.05)",

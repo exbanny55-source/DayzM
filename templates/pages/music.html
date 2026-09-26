@@ -1,12 +1,16 @@
 <h1>Музыка</h1>
-<p>Раздел для управления музыкой и звуками.</p>
+<p class="music-intro">
+    Список аудиофайлов из папки, указанной в <a href="#settings" class="nav-link" data-page="settings">настройках</a>.
+</p>
 
-<h2>Плейлисты</h2>
-<ul>
-  <li>Фоновая музыка</li>
-  <li>Боевые треки</li>
-  <li>Меню</li>
-</ul>
+<div id="music-status" class="music-status"></div>
 
-<h2>Загрузка</h2>
-<p>Здесь будет интерфейс для загрузки и управления аудиофайлами.</p>
+<div id="music-list" class="music-list">
+    <p class="music-loading">Загрузка списка…</p>
+</div>
+
+<div class="music-footer">
+    <button type="button" class="btn" id="music-refresh">
+        ⟳ Обновить список
+    </button>
+</div>

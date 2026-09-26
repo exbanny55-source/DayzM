@@ -343,8 +343,16 @@
       del.className = "menu-btn danger";
       del.textContent = "✕";
       del.title = "Удалить";
-      del.addEventListener("click", () => {
-        if (!confirm(`Удалить «${item.label || "без названия"}»?`)) return;
+      del.addEventListener("click", async () => {
+        const ok = await Confirm.show({
+          title: "Удалить пункт?",
+          text: `«${item.label || "без названия"}» будет удалён из меню.`,
+          okText: "Удалить",
+          cancelText: "Отмена",
+          danger: true
+        });
+        if (!ok) return;
+
         items.splice(index, 1);
         renderMenu(path);
       });
@@ -482,11 +490,16 @@
   }
 
   btnSave.addEventListener("click", save);
-  btnReload.addEventListener("click", () => {
-    if (!confirm("Перезагрузить настройки из файла? Несохранённые изменения будут потеряны.")) return;
+  btnReload.addEventListener("click", async () => {
+    const ok = await Confirm.show({
+      title: "Перезагрузить настройки?",
+      text: "Несохранённые изменения будут потеряны.",
+      okText: "Перезагрузить",
+      cancelText: "Отмена"
+    });
+    if (!ok) return;
     loadSettings();
   });
-
   /* -------------------- Старт -------------------- */
 
   // Даём DOM построиться и привязываем палитру к цветовым полям

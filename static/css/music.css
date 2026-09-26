@@ -1,0 +1,281 @@
+/* ============================================================
+   Страница «Музыка» — единый стеклянный стиль
+   ============================================================ */
+
+.music-intro {
+  font-size: 0.95rem;
+  opacity: 0.75;
+  margin-bottom: 20px;
+}
+
+/* ============================================================
+   Статус-бар
+   ============================================================ */
+
+.music-status {
+  min-height: 20px;
+  margin-bottom: 16px;
+  font-size: 0.85rem;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.music-status.show {
+  opacity: 1;
+  padding: 10px 14px;
+  border-radius: 8px;
+}
+
+.music-status.ok {
+  background: rgba(120, 200, 120, 0.15);
+  border: 1px solid rgba(120, 200, 120, 0.3);
+  color: #b8e6b8;
+}
+
+.music-status.err {
+  background: rgba(255, 100, 100, 0.15);
+  border: 1px solid rgba(255, 100, 100, 0.3);
+  color: #ffb8b8;
+}
+
+/* ============================================================
+   Контейнер списка
+   ============================================================ */
+
+.music-list {
+  margin-top: 8px;
+}
+
+.music-loading,
+.music-empty {
+  font-size: 0.95rem;
+  opacity: 0.6;
+  padding: 20px 0;
+  text-align: center;
+}
+
+.music-empty {
+  color: #ffb8b8;
+  opacity: 0.8;
+}
+
+/* ============================================================
+   Список треков
+   ============================================================ */
+
+.music-tracks {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* Строка трека — 4 колонки */
+
+.music-track {
+  position: relative;
+  display: grid;
+  grid-template-columns: 36px 36px 24px 1fr;
+  align-items: center;
+  gap: 12px;
+
+  padding: 10px 14px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  overflow: hidden;
+
+  cursor: pointer;             /* ← добавили */
+  user-select: none;           /* ← чтобы drag не выделял текст */
+  -webkit-user-select: none;
+
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.music-track:hover {
+  background: rgba(255, 255, 255, 0.07);
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+/* Фоновая заливка — прогресс воспроизведения */
+
+.music-track::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: var(--progress, 0%);
+  background: rgba(255, 255, 255, 0.10);
+  pointer-events: none;
+  opacity: 1;
+  transition: width 0.15s linear, opacity 0.3s ease;
+  z-index: 0;
+}
+
+/* Состояние сброса — полоса растворяется */
+.music-track.resetting::before {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+/* Играющий трек — чуть ярче обводка */
+
+.music-track.is-playing {
+  border-color: rgba(255, 255, 255, 0.35);
+}
+
+.music-track.is-playing .music-track-play {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.35);
+}
+
+.music-track.is-playing .music-track-play:hover {
+  background: rgba(255, 255, 255, 0.25);
+  border-color: rgba(255, 255, 255, 0.55);
+}
+
+/* ============================================================
+   Элементы строки
+   ============================================================ */
+
+/* Номер */
+
+.music-track-num {
+  font-size: 0.8rem;
+  font-family: ui-monospace, Menlo, Consolas, monospace;
+  opacity: 0.4;
+  text-align: right;
+  z-index: 1;
+}
+
+/* Кнопка Play/Pause */
+
+.music-track-play {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+
+  color: #fff;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, transform 0.1s;
+  z-index: 1;
+}
+
+.music-track-play:hover {
+  background: rgba(255, 255, 255, 0.18);
+  border-color: rgba(255, 255, 255, 0.35);
+}
+
+.music-track-play:active {
+  transform: scale(0.94);
+}
+
+.music-track-play-icon {
+  width: 14px;
+  height: 14px;
+  stroke: currentColor;
+  flex-shrink: 0;
+}
+
+/* Декор-нота */
+
+.music-track-icon {
+  width: 16px;
+  height: 16px;
+  color: currentColor;
+  opacity: 0.4;
+  justify-self: center;
+  z-index: 1;
+}
+
+/* ============================================================
+   Информация о треке
+   ============================================================ */
+
+.music-track-info {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  z-index: 1;
+}
+
+.music-track-title {
+  font-size: 0.95rem;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Строка meta + time — рядом */
+
+.music-track-info-meta-row {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+}
+
+.music-track-meta {
+  font-size: 0.75rem;
+  opacity: 0.5;
+  font-family: ui-monospace, Menlo, Consolas, monospace;
+  min-width: 140px;   /* фиксированная колонка — таймер выровнен */
+}
+
+/* Таймер — сразу после meta */
+
+.music-track-time {
+  font-size: 0.75rem;
+  font-family: ui-monospace, Menlo, Consolas, monospace;
+  opacity: 0.6;
+  white-space: nowrap;
+}
+
+.music-track-time .time-current {
+  color: #fff;
+  opacity: 1;
+}
+
+.music-track-time .time-sep {
+  opacity: 0.4;
+  margin: 0 2px;
+}
+
+.music-track-time .time-total {
+  opacity: 0.7;
+}
+
+/* ============================================================
+   Футер
+   ============================================================ */
+
+.music-footer {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+}
+
+/* ============================================================
+   Адаптив
+   ============================================================ */
+
+@media (max-width: 600px) {
+  .music-track {
+    grid-template-columns: 24px 30px 20px 1fr;
+    gap: 8px;
+    padding: 8px 10px;
+  }
+
+  .music-track-num   { font-size: 0.7rem; }
+  .music-track-title { font-size: 0.85rem; }
+  .music-track-meta  { font-size: 0.65rem; min-width: 0; }
+  .music-track-time  { font-size: 0.65rem; }
+}

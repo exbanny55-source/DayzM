@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
     <link rel="stylesheet" href="{{ url_for('static', filename='css/palette.css') }}" />
     <link rel="stylesheet" href="{{ url_for('static', filename='css/editor.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/confirm.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/music.css') }}" />
 
     <style>
         :root {
@@ -109,7 +111,8 @@
             <p>Выберите раздел в меню слева.</p>
         </section>
     </main>
-
+    <audio id="music-audio" preload="none"></audio>
+    
     <!-- Плавающая кнопка редактора -->
     <button class="fab" id="editor-fab" title="Редактор настроек" aria-label="Открыть редактор">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -120,7 +123,9 @@
     </button>
 
 <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+<script src="{{ url_for('static', filename='js/confirm.js') }}"></script>
 <script src="{{ url_for('static', filename='js/palette.js') }}"></script>
 <script src="{{ url_for('static', filename='js/editor.js') }}" defer></script>
 <script src="{{ url_for('static', filename='js/settings-page.js') }}" defer></script>
+<script src="{{ url_for('static', filename='js/music-page.js') }}" defer></script>
 </html>

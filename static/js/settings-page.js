@@ -7,22 +7,24 @@
 (function () {
   "use strict";
 
-  /* ---------- Утилиты ---------- */
-
   function initPage() {
-    const form = document.getElementById("paths-form");
+    const form      = document.getElementById("paths-form");
     const fieldsBox = document.getElementById("paths-fields");
-    const status = document.getElementById("paths-status");
-    const btnSave = document.getElementById("paths-save");
-    const btnReset = document.getElementById("paths-reset");
+    const status    = document.getElementById("paths-status");
+    const btnSave   = document.getElementById("paths-save");
+    const btnReset  = document.getElementById("paths-reset");
 
     if (!form || !fieldsBox) return;
 
+    // ---- Локальное состояние (живёт только пока страница в DOM) ----
     let fieldsMeta = [];
     let values = {};
-
     let statusTimer = null;
+
+    /* ---------- Статус-бар ---------- */
+
     function showStatus(msg, kind = "ok") {
+      if (!status) return;
       status.textContent = msg;
       status.className = "paths-status show " + kind;
       clearTimeout(statusTimer);
@@ -31,7 +33,7 @@
       }, 3500);
     }
 
-    /* ---------- Отрисовка ---------- */
+    /* ---------- Отрисовка полей ---------- */
 
     function renderFields() {
       fieldsBox.innerHTML = "";
@@ -69,7 +71,6 @@
         btn.addEventListener("click", () => pickPath(meta, input));
 
         inputWrap.append(input, btn);
-
         row.append(label, desc, inputWrap);
         fieldsBox.appendChild(row);
       });
@@ -84,7 +85,6 @@
           initial: input.value || ""
         };
         if (meta.type === "file" && meta.filetypes) {
-          // Преобразуем [["Executable", "*.exe"], ...] в "*.exe,*.txt"
           const exts = meta.filetypes
             .flatMap((t) => (t[1] || "").split(";"))
             .map((s) => s.trim())
@@ -109,7 +109,7 @@
       }
     }
 
-    /* ---------- Загрузка ---------- */
+    /* ---------- Загрузка списка путей ---------- */
 
     async function loadPaths() {
       try {
@@ -129,7 +129,6 @@
     /* ---------- Сохранение ---------- */
 
     async function savePaths() {
-      // Собираем значения из полей
       const data = {};
       fieldsBox.querySelectorAll("input[data-key]").forEach((inp) => {
         data[inp.dataset.key] = inp.value.trim();
@@ -150,43 +149,43 @@
       }
     }
 
-    /* ---------- Сброс (очистка полей, не сохранение) ---------- */
+    /* ---------- Сброс ---------- */
 
-    function resetFields() {
-      if (!confirm("Очистить все поля? Файл paths.json изменится только после сохранения.")) return;
+    async function resetFields() {
+      const ok = await Confirm.show({
+        title: "Очистить все поля?",
+        text: "Файл paths.json изменится только после сохранения.",
+        okText: "Очистить",
+        cancelText: "Отмена",
+        danger: true
+      });
+      if (!ok) return;
+
       fieldsBox.querySelectorAll("input[data-key]").forEach((inp) => {
         inp.value = "";
       });
     }
 
-    /* ---------- События ---------- */
+    /* ---------- Привязка кнопок ---------- */
 
     btnSave.addEventListener("click", savePaths);
     btnReset.addEventListener("click", resetFields);
 
-    /* ---------- Старт ---------- */
+    /* ---------- Загружаем данные ---------- */
 
     loadPaths();
   }
 
-  /* ---------- Точка входа ---------- */
+  /* ---------- Хук на событие SPA ---------- */
 
-  // SPA: страница может подгружаться позже. Слушаем появление
-  // нужных элементов в DOM.
-  function ready() {
-    if (document.getElementById("paths-form")) {
+  document.addEventListener("spa:page-loaded", (e) => {
+    if (e.detail && e.detail.page === "settings") {
       initPage();
-      return true;
     }
-    return false;
-  }
+  });
 
-  // Пытаемся сразу (если страница уже загружена)
-  if (!ready()) {
-    // Следим за изменениями в DOM — SPA вставит страницу позже
-    const observer = new MutationObserver(() => {
-      if (ready()) observer.disconnect();
-    });
-    observer.observe(document.body, { childList: true, subtree: true });
+  // Если index.html сразу открыт на #settings
+  if (location.hash === "#settings") {
+    setTimeout(initPage, 100);
   }
 })();
