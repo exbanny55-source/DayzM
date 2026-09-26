@@ -5,27 +5,39 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Dayz Менеджер</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/palette.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/editor.css') }}" />
 
     <style>
         :root {
+            /* Фон */
             --bg-url: url("{{ background_url }}");
             --bg-pos: {{ bg_anim.pos_from | default(20) }}%;
 
+            /* Рамка */
             --frame-margin: {{ frame.margin }}px;
             --frame-blur: {{ frame.blur }}px;
-            --frame-opacity: {{ frame.opacity }};
             --frame-radius: {{ frame.border_radius }}px;
             --frame-border: {{ frame.border_width }}px;
+            --frame-border-color: {{ frame.border_color | default('rgba(255, 255, 255, 0.5)') }};
+            --frame-bg: {{ frame.background | default('rgba(16, 21, 61, 0.25)') }};
+            /* FAB */
+            --fab-border-width: {{ frame.fab_border_width | default(1) }}px;
+            --fab-border-color: {{ frame.fab_border_color | default('rgba(255, 255, 255, 0.3)') }};
+            --fab-icon-color:   {{ frame.fab_icon_color   | default('rgba(255, 255, 255, 1)') }};
 
+            /* Сайдбар */
             --sidebar-width: {{ sidebar.width }}px;
             --sidebar-bg: {{ sidebar.background }};
             --sidebar-border-width: {{ sidebar.border_width }}px;
             --sidebar-border-color: {{ sidebar.border_color }};
 
+            /* Нижний блок сайдбара */
             --sidebar-footer-bg: {{ sidebar.footer.background | default('rgba(255,255,255,0.05)') }};
             --sidebar-footer-border-width: {{ sidebar.footer.border_top_width | default(1) }}px;
             --sidebar-footer-border-color: {{ sidebar.footer.border_top_color | default('rgba(255,255,255,0.1)') }};
 
+            /* Обводка пунктов верхнего меню */
             --menu-item-border-width: {{ sidebar.menu_style.item_border_width | default(1) }}px;
             --menu-item-border-color: {{ sidebar.menu_style.item_border_color | default('rgba(255,255,255,0.15)') }};
             --menu-item-border-radius: {{ sidebar.menu_style.item_border_radius | default(8) }}px;
@@ -54,8 +66,8 @@
                     {% if item.enabled %}
                     <li>
                         <a href="#{{ item.page | default('') }}"
-                        data-page="{{ item.page | default('') }}"
-                        class="nav-link">
+                           data-page="{{ item.page | default('') }}"
+                           class="nav-link">
                             {% if item.icon %}
                             <svg class="nav-icon" aria-hidden="true">
                                 <use href="{{ url_for('static', filename='icons/icons.svg') }}#icon-{{ item.icon }}"></use>
@@ -75,8 +87,8 @@
                         {% if item.enabled %}
                         <li>
                             <a href="#{{ item.page | default('') }}"
-                            data-page="{{ item.page | default('') }}"
-                            class="nav-link">
+                               data-page="{{ item.page | default('') }}"
+                               class="nav-link">
                                 {% if item.icon %}
                                 <svg class="nav-icon" aria-hidden="true">
                                     <use href="{{ url_for('static', filename='icons/icons.svg') }}#icon-{{ item.icon }}"></use>
@@ -91,12 +103,24 @@
             </div>
             {% endif %}
         </aside>
+
         <section class="content" id="content">
             <h1>Добро пожаловать</h1>
             <p>Выберите раздел в меню слева.</p>
         </section>
     </main>
 
-    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
-</body>
+    <!-- Плавающая кнопка редактора -->
+    <button class="fab" id="editor-fab" title="Редактор настроек" aria-label="Открыть редактор">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+             stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="3"/>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+        </svg>
+    </button>
+
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+<script src="{{ url_for('static', filename='js/palette.js') }}"></script>
+<script src="{{ url_for('static', filename='js/editor.js') }}" defer></script>
+<script src="{{ url_for('static', filename='js/settings-page.js') }}" defer></script>
 </html>

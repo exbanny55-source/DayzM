@@ -1,69 +1,83 @@
 {
   "background": {
-    "type": "local",
-    "source": "images/fon.jpg",
     "animation": {
-      "enabled": true,
       "duration": 120000,
+      "enabled": true,
       "pos_from": 20,
       "pos_to": 100,
       "zoom": {
-        "from": 1.0,
+        "from": 1,
         "to": 1.4
       }
-    }
+    },
+    "source": "images/fon.jpg",
+    "type": "local"
+  },
+  "colors": {
+    "text": "#339933"
   },
   "frame": {
-    "margin": 20,
+    "background": "rgba(255, 255, 255, 0.08)",
     "blur": 1,
-    "opacity": 0.25,
+    "border_color": "#333333",
     "border_radius": 15,
-    "border_width": 1
+    "border_width": 1,
+    "fab_border_color": "#40c040",
+    "fab_border_width": 1,
+    "fab_icon_color": "#ffcc00",
+    "margin": 20,
+    "opacity": 0.25
   },
   "sidebar": {
-    "title": "Dayz Менеджер",
-    "width": 240,
     "background": "transparent",
-    "border_width": 1,
-    "border_color": "rgba(255, 255, 255, 0.2)",
-    "menu_style": {
-      "item_border_width": 1,
-      "item_border_color": "rgba(255, 255, 255, 0.15)",
-      "item_border_radius": 8,
-      "item_hover_border_color": "rgba(255, 255, 255, 0.4)"
+    "border_color": "#4d4d4d",
+    "border_width": 2,
+    "footer": {
+      "background": "rgba(255, 255, 255, 0.05)",
+      "border_top_color": "rgba(255, 255, 255, 0.1)",
+      "border_top_width": 1,
+      "menu": [
+        {
+          "enabled": true,
+          "icon": "music",
+          "label": "Музыка",
+          "page": "music"
+        },
+        {
+          "enabled": true,
+          "icon": "settings",
+          "label": "Настройки",
+          "page": "settings"
+        }
+      ]
     },
     "menu": [
       {
         "enabled": true,
-        "label": "Управление Сервером",
         "icon": "server",
+        "label": "Управление Сервером",
         "page": "servers"
       },
       {
         "enabled": true,
-        "label": "Управление Игрой",
         "icon": "game",
+        "label": "Управление Игрой",
         "page": "game"
       },
       {
         "enabled": true,
-        "label": "Управление Модами",
         "icon": "mod",
+        "label": "Управление Модами",
         "page": "mods"
       }
     ],
-    "footer": {
-      "background": "rgba(255, 255, 255, 0.05)",
-      "border_top_width": 1,
-      "border_top_color": "rgba(255, 255, 255, 0.1)",
-      "menu": [
-        {
-          "enabled": true,
-          "label": "Настройки",
-          "icon": "settings",
-          "page": "settings"
-        }
-      ]
-    }
+    "menu_style": {
+      "item_border_color": "rgba(255, 255, 255, 0.25)",
+      "item_border_radius": 8,
+      "item_border_width": 1,
+      "item_hover_border_color": "#7ec87e"
+    },
+    "title": "Dayz Менеджер",
+    "width": 260
   }
 }

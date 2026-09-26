@@ -44,8 +44,8 @@ body {
   z-index: 10;
   overflow: hidden;
 
-  background: rgba(16, 21, 61, var(--frame-opacity));
-  border: var(--frame-border) solid rgba(255, 255, 255, 0.5);
+  background: var(--frame-bg);
+  border: var(--frame-border) solid var(--frame-border-color);
   border-radius: var(--frame-radius);
   box-shadow:
     0 0.5px 0 1px rgba(255, 255, 255, 0.23) inset,
@@ -137,34 +137,18 @@ body {
   font-weight: 500;
   opacity: 0.75;
 
-  border-radius: 8px;
+  border: var(--menu-item-border-width) solid var(--menu-item-border-color);
+  border-radius: var(--menu-item-border-radius);
   transition: background 0.2s, opacity 0.2s, border-color 0.2s;
 }
 
-/* Обводка — только у верхнего меню (.sidebar > .sidebar-nav) */
-.sidebar > .sidebar-nav li a {
-  border: var(--menu-item-border-width) solid var(--menu-item-border-color);
-  border-radius: var(--menu-item-border-radius);
-}
-
-.sidebar > .sidebar-nav li a:hover {
+.sidebar-nav li a:hover {
   background: rgba(255, 255, 255, 0.08);
   opacity: 1;
   border-color: var(--menu-item-hover-border-color);
 }
 
-.sidebar > .sidebar-nav li a.active {
-  background: rgba(255, 255, 255, 0.15);
-  opacity: 1;
-}
-
-/* Footer — без обводки, только hover-фон */
-.sidebar-footer .sidebar-nav li a:hover {
-  background: rgba(255, 255, 255, 0.08);
-  opacity: 1;
-}
-
-.sidebar-footer .sidebar-nav li a.active {
+.sidebar-nav li a.active {
   background: rgba(255, 255, 255, 0.15);
   opacity: 1;
 }
@@ -173,7 +157,7 @@ body {
   width: 20px;
   height: 20px;
   flex-shrink: 0;
-  color: currentColor;   /* наследует цвет текста ссылки */
+  color: currentColor;
 }
 
 .sidebar-nav .nav-label {
@@ -208,6 +192,7 @@ body {
 }
 
 /* Типографика внутри контента */
+
 .content h1 {
   font-size: 1.5rem;
   font-weight: 600;
@@ -248,8 +233,132 @@ body {
   color: #d4caff;
 }
 
-/* Состояние загрузки (если понадобится потом) */
 .content.is-loading {
   opacity: 0.4;
   pointer-events: none;
+}
+
+/* ============================================================
+   Страница настроек — пути
+   ============================================================ */
+
+.paths-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 20px;
+}
+
+.paths-row {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 6px 16px;
+  align-items: start;
+  padding: 12px 14px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+}
+
+.paths-row-label {
+  grid-row: span 2;
+  font-size: 0.95rem;
+  font-weight: 600;
+  opacity: 0.9;
+  padding-top: 8px;
+}
+
+.paths-row-desc {
+  grid-column: 2;
+  font-size: 0.75rem;
+  opacity: 0.5;
+  margin: 0;
+}
+
+.paths-row-input {
+  grid-column: 2;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.paths-row-input input {
+  flex: 1;
+  min-width: 0;
+  padding: 8px 12px;
+  color: #fff;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 6px;
+  font-family: ui-monospace, Menlo, Consolas, monospace;
+  font-size: 0.85rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.paths-row-input input:focus {
+  border-color: rgba(169, 150, 253, 0.6);
+}
+
+.paths-browse {
+  flex-shrink: 0;
+  padding: 8px 12px;
+  font-size: 0.85rem;
+}
+
+.paths-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.paths-status {
+  min-height: 20px;
+  margin-top: 12px;
+  padding: 0;
+  font-size: 0.85rem;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.paths-status.show {
+  opacity: 1;
+  padding: 10px 14px;
+  border-radius: 8px;
+}
+
+.paths-status.ok {
+  background: rgba(120, 200, 120, 0.15);
+  border: 1px solid rgba(120, 200, 120, 0.3);
+  color: #b8e6b8;
+}
+
+.paths-status.err {
+  background: rgba(255, 100, 100, 0.15);
+  border: 1px solid rgba(255, 100, 100, 0.3);
+  color: #ffb8b8;
+}
+
+.paths-loading,
+.paths-error {
+  font-size: 0.9rem;
+  opacity: 0.7;
+  padding: 10px 0;
+}
+
+.paths-error {
+  color: #ffb8b8;
+}
+
+@media (max-width: 800px) {
+  .paths-row {
+    grid-template-columns: 1fr;
+  }
+  .paths-row-label,
+  .paths-row-desc,
+  .paths-row-input {
+    grid-column: 1;
+    grid-row: auto;
+  }
 }

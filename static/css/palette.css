@@ -1,0 +1,261 @@
+/* ============================================================
+   Палитра цветов — модальное окно по центру
+   ============================================================ */
+
+.palette-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 20000;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s;
+}
+
+.palette-overlay.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Модалка */
+
+.palette-modal {
+  width: 100%;
+  max-width: 640px;
+  max-height: 85vh;
+
+  display: flex;
+  flex-direction: column;
+
+  color: #fff;
+  background: rgba(20, 20, 25, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 14px;
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.6),
+    0 1px 0 0 rgba(255, 255, 255, 0.1) inset;
+
+  transform: scale(0.96);
+  transition: transform 0.2s;
+}
+
+.palette-overlay.open .palette-modal {
+  transform: scale(1);
+}
+
+/* Шапка */
+
+.palette-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.palette-modal-header h3 {
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+
+.palette-modal-close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+
+  color: #fff;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.palette-modal-close:hover {
+  background: rgba(255, 100, 100, 0.25);
+  border-color: rgba(255, 100, 100, 0.5);
+}
+
+/* Текущее значение */
+
+.palette-modal-current {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  font-size: 0.85rem;
+  opacity: 0.85;
+}
+
+.palette-modal-current code {
+  font-family: ui-monospace, Menlo, Consolas, monospace;
+  font-size: 0.85rem;
+  background: rgba(0, 0, 0, 0.3);
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.palette-current-swatch {
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  overflow: hidden;
+  position: relative;
+}
+
+/* Тело с набором цветов */
+
+.palette-modal-body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 16px 20px;
+}
+
+.palette-modal-body::-webkit-scrollbar {
+  width: 8px;
+}
+.palette-modal-body::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 4px;
+}
+.palette-modal-body::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+/* Секции */
+
+.palette-section {
+  margin-bottom: 18px;
+}
+
+.palette-section:last-child {
+  margin-bottom: 0;
+}
+
+.palette-section-title {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  opacity: 0.55;
+  margin-bottom: 8px;
+}
+
+/* Сетка свотчей */
+
+.palette-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(34px, 1fr));
+  gap: 6px;
+}
+
+/* Один свотч */
+
+.palette-swatch {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  padding: 0;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  cursor: pointer;
+  overflow: hidden;
+  transition: transform 0.1s, border-color 0.15s, box-shadow 0.15s;
+}
+
+.palette-swatch:hover {
+  transform: scale(1.15);
+  border-color: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  z-index: 2;
+}
+
+/* Шахматка для прозрачных цветов */
+
+.palette-swatch-checker {
+  background-image:
+    linear-gradient(45deg, #444 25%, transparent 25%),
+    linear-gradient(-45deg, #444 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, #444 75%),
+    linear-gradient(-45deg, transparent 75%, #444 75%);
+  background-size: 8px 8px;
+  background-position: 0 0, 0 4px, 4px -4px, -4px 0;
+  background-color: #2a2a2a;
+}
+
+.palette-swatch-layer {
+  position: absolute;
+  inset: 0;
+  display: block;
+  border-radius: inherit;
+}
+
+/* Футер */
+
+.palette-modal-footer {
+  padding: 12px 20px 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.palette-custom {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.85rem;
+}
+
+.palette-custom span {
+  opacity: 0.7;
+  white-space: nowrap;
+}
+
+.palette-custom input[type="text"] {
+  flex: 1;
+  padding: 8px 12px;
+
+  color: #fff;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 6px;
+  font-family: ui-monospace, Menlo, Consolas, monospace;
+  font-size: 0.85rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.palette-custom input[type="text"]:focus {
+  border-color: rgba(169, 150, 253, 0.6);
+}
+
+/* Кнопки внутри палитры (переиспользуем .btn из editor.css) */
+
+.palette-modal-footer .btn {
+  padding: 8px 14px;
+  font-size: 0.85rem;
+}
+
+/* Поля, к которым привязана палитра */
+
+.palette-input {
+  cursor: pointer;
+}
+
+.palette-input:focus {
+  border-color: rgba(169, 150, 253, 0.6);
+}
